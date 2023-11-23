@@ -2,6 +2,8 @@ import os
 import pandas as pd
 import numpy as np
 
+# type_name
+type_name = "AB123-XYZ"
 
 # Dataset
 dataset = pd.DataFrame({
@@ -52,14 +54,65 @@ cond = pd.DataFrame({
 })
 
 # map images
+'''
 map_images = pd.DataFrame({
     "Mode":["Edge", "Ring", "Center"],
     "ALL_img_paths":[mapim, mapim, mapim],
+    "ALL_img_regional_paths":[mapim, mapim, mapim],
     "Sample1_lotid":["aaaaaaaa", "bbbbbbbb", "cccccccc"],
     "Samp1_img_paths":[mapim, mapim, mapim],
     "Sample2_lotid":["aaaaaaaa", "bbbbbbbb", "cccccccc"],
     "Samp2_img_paths":[mapim, mapim, mapim],
 })
+'''
+map_images = pd.DataFrame({
+    "Mode":[],
+    "ALL_img_path":[],
+    "ALL_img_reginal_paths":[],
+    "lotid":[],
+    "lot_img":[]
+})
+# make dataframe
+modes = ["Edge", "Ring", "Center", "Random"]
+for m in modes:
+    for i in range(10):
+        for j in range(10):
+            map_images = pd.concat([
+                map_images,
+                pd.DataFrame({
+                    "Test":[f"TEST{i}"],
+                    "Mode":[m],
+                    "ALL_img_path":[mapim],
+                    "ALL_img_reginal_path":[mapim],
+                    "lotid":["aaaaaaaa"],
+                    "lot_img":[mapim],
+                })
+            ])
+map_images["FailureRate"] = [i*0.01 for i in range(len(map_images))]
+map_images.reset_index(drop=True, inplace=True)
+
+# slot df
+slot_df = pd.DataFrame({
+    "Test":[],
+    "Mode":[],
+    "lotid":[]
+})
+# make dataframe
+modes = ["Slot Cycle_2", "Slot Trend_increase", "Slot Bias_front", np.nan]
+for m in modes:
+    for i in range(10):
+        for j in range(10):
+            slot_df = pd.concat([
+                slot_df,
+                pd.DataFrame({
+                    "Test":[f"TEST{i}"],
+                    "Mode":[m],
+                    "lotid":["aaaaaaaa"]
+                })
+            ])
+slot_df["FailureRate"] = [i*0.01 for i in range(len(slot_df))]
+slot_df.reset_index(drop=True, inplace=True)
+
 
 # graph lot images
 graph_lot_images = pd.DataFrame({

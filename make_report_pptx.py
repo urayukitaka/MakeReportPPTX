@@ -8,14 +8,17 @@ from pptx.dml.color import RGBColor
 # pandas
 import pandas as pd
 import numpy as np
+# datetime
+from datetime import datetime as dt
 
 # dataset sample
 import sample_dataset as sd
 
 # parameter
-orange = (214, 87, 20)
+orange = (165,42,42)
 blue = (0,0,128)
 sky = (0,153,255)
+comment = "注意事項\n・\n・"
 
 # class
 class MakePPT:
@@ -34,6 +37,7 @@ class MakePPT:
     # 1st slide, analysis data summary
     ##########################################
     def data_summary(self,
+                     type_name:str,
                      dataset_summary:pd.DataFrame,
                      ml_learning_dataset_summary:pd.DataFrame):
         # select slide layout
@@ -45,29 +49,53 @@ class MakePPT:
         # title
         # ------------------------
         title = slide.shapes.title
-        title.text = "Analysis data summary"
+        title.text = "Auto Machine learning repot"
         # title text format and position
-        title = self.format_title(title=title)
+        title = self.format_title_cover(title=title)
 
         # ------------------------
         # dataset summary
         # ------------------------
         # add text box, left -> top -> width -> height
-        textbox1 = slide.shapes.add_textbox(Inches(0.5),
-                                            Inches(1),
+        textbox2 = slide.shapes.add_textbox(Inches(1),
+                                            Inches(1.2),
+                                            Inches(10),
+                                            Inches(1))
+        # add text
+        textbox2.text_frame.paragraphs[0].text = " Type : {}\n Executed date : {}\n{}".format(type_name, dt.now().strftime("%Y/%m/%d"), comment)
+        textbox2.text_frame.paragraphs[0].font.size = Pt(12) # font size
+        textbox2.text_frame.paragraphs[0].font.name = "Meiryo UI" # font
+        textbox2.text_frame.paragraphs[0].font.bold = True # bold
+        textbox2.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT # position
+
+        # add text box, left -> top -> width -> height
+        textbox2 = slide.shapes.add_textbox(Inches(0.5),
+                                            Inches(2.5),
                                             Inches(5),
                                             Inches(0.3))
         # add text
-        textbox1.text_frame.paragraphs[0].text = "Dataset summary"
-        textbox1.text_frame.paragraphs[0].font.size = Pt(12) # font size
-        textbox1.text_frame.paragraphs[0].font.name = "Meiryo UI" # font
-        textbox1.text_frame.paragraphs[0].font.bold = True # bold
-        textbox1.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT # position
+        textbox2.text_frame.paragraphs[0].text = "Dataset"
+        textbox2.text_frame.paragraphs[0].font.size = Pt(12) # font size
+        textbox2.text_frame.paragraphs[0].font.name = "Meiryo UI" # font
+        textbox2.text_frame.paragraphs[0].font.bold = True # bold
+        textbox2.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT # position
+
+        # add text box, left -> top -> width -> height
+        textbox3 = slide.shapes.add_textbox(Inches(0.7),
+                                            Inches(3),
+                                            Inches(5),
+                                            Inches(0.3))
+        # add text
+        textbox3.text_frame.paragraphs[0].text = "Dataset summary"
+        textbox3.text_frame.paragraphs[0].font.size = Pt(12) # font size
+        textbox3.text_frame.paragraphs[0].font.name = "Meiryo UI" # font
+        textbox3.text_frame.paragraphs[0].font.bold = True # bold
+        textbox3.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT # position
         # add dataframe
         self.add_matrix_1(slide=slide,
                         df=dataset_summary,
-                        left=0.5,
-                        top=1.5,
+                        left=0.7,
+                        top=3.5,
                         width=5,
                         height=10,
                         column_color=orange,
@@ -77,21 +105,21 @@ class MakePPT:
         # ml learning dataset summary
         # ------------------------
         # add text box, left -> top -> width -> height
-        textbox2 = slide.shapes.add_textbox(Inches(6.5),
-                                            Inches(1),
+        textbox4 = slide.shapes.add_textbox(Inches(7),
+                                            Inches(3),
                                             Inches(5),
                                             Inches(0.3))
         # add text
-        textbox2.text_frame.paragraphs[0].text = "ML Learning dataset summary"
-        textbox2.text_frame.paragraphs[0].font.size = Pt(12) # font size
-        textbox2.text_frame.paragraphs[0].font.name = "Meiryo UI" # font
-        textbox2.text_frame.paragraphs[0].font.bold = True # bold
-        textbox2.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT # position
+        textbox4.text_frame.paragraphs[0].text = "ML Learning dataset summary"
+        textbox4.text_frame.paragraphs[0].font.size = Pt(12) # font size
+        textbox4.text_frame.paragraphs[0].font.name = "Meiryo UI" # font
+        textbox4.text_frame.paragraphs[0].font.bold = True # bold
+        textbox4.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT # position
         # add dataframe
         self.add_matrix_1(slide=slide,
                         df=ml_learning_dataset_summary,
                         left=6.5,
-                        top=1.5,
+                        top=3.5,
                         width=5,
                         height=10,
                         column_color=orange,
@@ -121,7 +149,7 @@ class MakePPT:
         # text box 1
         # add text box, left -> top -> width -> height
         textbox1 = slide.shapes.add_textbox(Inches(0.4),
-                                            Inches(0.5),
+                                            Inches(1),
                                             Inches(4),
                                             Inches(0.3))
         # add text
@@ -134,7 +162,7 @@ class MakePPT:
         # text box 2
         # add text box, left -> top -> width -> height
         textbox2 = slide.shapes.add_textbox(Inches(4.25),
-                                            Inches(0.5),
+                                            Inches(1),
                                             Inches(4),
                                             Inches(0.3))
         # add text
@@ -147,7 +175,7 @@ class MakePPT:
         # text box 3
         # add text box, left -> top -> width -> height
         textbox3 = slide.shapes.add_textbox(Inches(9.25),
-                                            Inches(0.5),
+                                            Inches(1),
                                             Inches(4),
                                             Inches(0.3))
         # add text
@@ -162,7 +190,7 @@ class MakePPT:
         self.add_matrix_2(slide=slide,
                         df=diagram,
                         left=0.4,
-                        top=0.8,
+                        top=1.3,
                         width=12,
                         height=15,
                         merge_columns=[(0,"Total"), (1,"Y*"), (2, "BIN")])
@@ -262,18 +290,23 @@ class MakePPT:
         top = 4.2
         width = 0.7
         height = 0.7
-        for idx, row in map_images_df.iterrows():
+
+        # check mode without random mode and sort value
+        map_summary = map_images_df[(map_images_df["Test"]==test_name)&(map_images_df["Mode"]!="Random")].groupby("Mode")["FailureRate"].mean().reset_index().sort_values(by="FailureRate", ascending=False)
+        for idx, row in map_summary.iterrows():
             # max 3 mode
             if idx<3:
                 # mode
                 mode = row["Mode"]
-                # all stack map
-                all_img_path = row["ALL_img_paths"]
                 # sample
-                lotid_1 = row["Sample1_lotid"]
-                img_1 = row["Samp1_img_paths"]
-                lotid_2 = row["Sample2_lotid"]
-                img_2 = row["Samp2_img_paths"]
+                sample = map_images_df[(map_images_df["Test"]==test_name)&(map_images_df["Mode"]==mode)][["ALL_img_path", "lotid", "lot_img", "FailureRate"]]
+                sample = sample.sort_values(by="FailureRate", ascending=False)
+                # all stack map
+                all_img_path = sample["ALL_img_path"].values[0]
+                lotid_1 = sample["lotid"].values[0]
+                img_1 = sample["lot_img"].values[0]
+                lotid_2 = sample["lotid"].values[1]
+                img_2 = sample["lot_img"].values[1]
 
                 # all image ------------------------
                 slide.shapes.add_picture(all_img_path,
@@ -396,7 +429,240 @@ class MakePPT:
                                         position="center")
 
     ##########################################
-    # 4th slide, Auto factor analysis result
+    # 4th slide, Map analysis result
+    ##########################################
+    def map_analysis(self,
+                     test_name:str,
+                     condition_analysis:pd.DataFrame,
+                     map_images_df:pd.DataFrame):
+        # select slide layout
+        slide_layout = self.prs.slide_layouts[5] # 5 is blank slide
+        # add slide
+        slide = self.prs.slides.add_slide(slide_layout)
+
+        # ------------------------
+        # title
+        # ------------------------
+        title = slide.shapes.title
+        title.text = f"Test : {test_name}, Condition analysis result, Map analysis result"
+        # title text format and position
+        title = self.format_title(title=title)
+
+        # --------------------------
+        # sub title by text box
+        # --------------------------
+        self.add_subtitle(slide=slide,
+                          subtitle_sentence="Please input comment.")
+
+        # --------------------------
+        # Map analysis
+        # --------------------------
+        # data preprocessing
+        # all map classification image
+        all_img_reginal_path = map_images_df[map_images_df["Test"]==test_name]["ALL_img_reginal_path"].values[0]
+        # condition list only map
+        map_analysis = condition_analysis[condition_analysis["Type"].str.contains("Map")]
+        # map summary
+        map_summary = map_images_df[(map_images_df["Test"]==test_name)&(map_images_df["Mode"]!="Random")].groupby("Mode")["FailureRate"].mean().reset_index().sort_values(by="FailureRate", ascending=False)
+
+        # Map classification result
+        # add text box, left -> top -> width -> height
+        textbox1 = slide.shapes.add_textbox(Inches(0.5),
+                                            Inches(1),
+                                            Inches(3),
+                                            Inches(0.3))
+        # add text
+        textbox1.text_frame.paragraphs[0].text = "Map analysis"
+        textbox1.text_frame.paragraphs[0].font.size = Pt(12) # font size
+        textbox1.text_frame.paragraphs[0].font.name = "Meiryo UI" # font
+        textbox1.text_frame.paragraphs[0].font.bold = True # bold
+        textbox1.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT # position
+        # matrix
+        self.add_matrix_1(slide=slide,
+                        df=map_analysis,
+                        left=0.7,
+                        top=1.5,
+                        width=3,
+                        height=3,
+                        column_color=blue,
+                        merge_columns=None)
+
+        # Map image text
+        # add text box, left -> top -> width -> height
+        textbox2 = slide.shapes.add_textbox(Inches(0.5),
+                                            Inches(3.5),
+                                            Inches(3),
+                                            Inches(0.3))
+        # add text
+        textbox2.text_frame.paragraphs[0].text = "Map classification result"
+        textbox2.text_frame.paragraphs[0].font.size = Pt(12) # font size
+        textbox2.text_frame.paragraphs[0].font.name = "Meiryo UI" # font
+        textbox2.text_frame.paragraphs[0].font.bold = True # bold
+        textbox2.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT # position
+        # map image
+        slide.shapes.add_picture(all_img_reginal_path,
+                                 Inches(0.7),
+                                 Inches(4),
+                                 Inches(3),
+                                 Inches(3)
+                                 )
+
+        # --------------------------
+        # Sampling list
+        # --------------------------
+        # add text box, left -> top -> width -> height
+        textbox3 = slide.shapes.add_textbox(Inches(4.5),
+                                            Inches(1),
+                                            Inches(3),
+                                            Inches(0.3))
+        # add text
+        textbox3.text_frame.paragraphs[0].text = "Lot sample"
+        textbox3.text_frame.paragraphs[0].font.size = Pt(12) # font size
+        textbox3.text_frame.paragraphs[0].font.name = "Meiryo UI" # font
+        textbox3.text_frame.paragraphs[0].font.bold = True # bold
+        textbox3.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT # position
+
+        # Each list name
+        for idx, row in map_summary.iterrows():
+            # max 3 mode
+            if idx<3:
+                # mode
+                mode = row["Mode"]
+                # sample
+                sample = map_images_df[(map_images_df["Test"]==test_name)&(map_images_df["Mode"]==mode)][["lotid", "FailureRate"]]
+                sample = sample.sort_values(by="FailureRate", ascending=False)
+                # max 15 data
+                if len(sample)>15:
+                    sample = sample.iloc[:15,:]
+
+            # add text box, left -> top -> width -> height
+            textbox4 = slide.shapes.add_textbox(Inches(4.5+3*idx),
+                                                Inches(1.5),
+                                                Inches(2.5),
+                                                Inches(0.3))
+            # add text
+            textbox4.text_frame.paragraphs[0].text = f"Map {mode}"
+            textbox4.text_frame.paragraphs[0].font.size = Pt(10.5) # font size
+            textbox4.text_frame.paragraphs[0].font.name = "Meiryo UI" # font
+            textbox4.text_frame.paragraphs[0].font.bold = True # bold
+            textbox4.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT # position
+            # add matrix
+            self.add_matrix_1(slide=slide,
+                            df=sample,
+                            left=4.5+3*idx,
+                            top=2,
+                            width=2.5,
+                            height=5,
+                            column_color=blue,
+                            merge_columns=None)
+
+    ##########################################
+    # 5th slide, Slot analysis result
+    ##########################################
+    def slot_analysis(self,
+                     test_name:str,
+                     condition_analysis:pd.DataFrame,
+                     slot_analysis_df:pd.DataFrame):
+        # select slide layout
+        slide_layout = self.prs.slide_layouts[5] # 5 is blank slide
+        # add slide
+        slide = self.prs.slides.add_slide(slide_layout)
+
+        # ------------------------
+        # title
+        # ------------------------
+        title = slide.shapes.title
+        title.text = f"Test : {test_name}, Condition analysis result, Map analysis result"
+        # title text format and position
+        title = self.format_title(title=title)
+
+        # --------------------------
+        # sub title by text box
+        # --------------------------
+        self.add_subtitle(slide=slide,
+                          subtitle_sentence="Please input comment.")
+
+        # --------------------------
+        # Map analysis
+        # --------------------------
+        # data preprocessing
+        # slot summary
+        slot_analysis = condition_analysis[condition_analysis["Type"].str.contains("Slot")]
+        # condition list only slot
+        slot_summary = slot_analysis_df[(slot_analysis_df["Test"]==test_name)].groupby("Mode")["FailureRate"].mean().reset_index().sort_values(by="FailureRate", ascending=False)
+
+        # Map classification result
+        # add text box, left -> top -> width -> height
+        textbox1 = slide.shapes.add_textbox(Inches(0.5),
+                                            Inches(1),
+                                            Inches(3),
+                                            Inches(0.3))
+        # add text
+        textbox1.text_frame.paragraphs[0].text = "Slot analysis"
+        textbox1.text_frame.paragraphs[0].font.size = Pt(12) # font size
+        textbox1.text_frame.paragraphs[0].font.name = "Meiryo UI" # font
+        textbox1.text_frame.paragraphs[0].font.bold = True # bold
+        textbox1.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT # position
+        # matrix
+        self.add_matrix_1(slide=slide,
+                        df=slot_analysis,
+                        left=0.7,
+                        top=1.5,
+                        width=3,
+                        height=3,
+                        column_color=blue,
+                        merge_columns=None)
+
+        # --------------------------
+        # Sampling list
+        # --------------------------
+        # add text box, left -> top -> width -> height
+        textbox2 = slide.shapes.add_textbox(Inches(4.5),
+                                            Inches(1),
+                                            Inches(3),
+                                            Inches(0.3))
+        # add text
+        textbox2.text_frame.paragraphs[0].text = "Lot sample"
+        textbox2.text_frame.paragraphs[0].font.size = Pt(12) # font size
+        textbox2.text_frame.paragraphs[0].font.name = "Meiryo UI" # font
+        textbox2.text_frame.paragraphs[0].font.bold = True # bold
+        textbox2.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT # position
+
+        # Each list name
+        for idx, row in slot_summary.iterrows():
+            # max 3 mode
+            if idx<3:
+                # mode
+                mode = row["Mode"]
+                # sample
+                sample = slot_analysis_df[(slot_analysis_df["Test"]==test_name)&(slot_analysis_df["Mode"]==mode)][["lotid", "FailureRate"]]
+                sample = sample.sort_values(by="FailureRate", ascending=False)
+                # max 15 data
+                if len(sample)>15:
+                    sample = sample.iloc[:15,:]
+            # add text box, left -> top -> width -> height
+            textbox4 = slide.shapes.add_textbox(Inches(4.5+3*idx),
+                                                Inches(1.5),
+                                                Inches(2.5),
+                                                Inches(0.3))
+            # add text
+            textbox4.text_frame.paragraphs[0].text = f"Slot {mode}"
+            textbox4.text_frame.paragraphs[0].font.size = Pt(10.5) # font size
+            textbox4.text_frame.paragraphs[0].font.name = "Meiryo UI" # font
+            textbox4.text_frame.paragraphs[0].font.bold = True # bold
+            textbox4.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT # position
+            # add matrix
+            self.add_matrix_1(slide=slide,
+                            df=sample,
+                            left=4.5+3*idx,
+                            top=2,
+                            width=2.5,
+                            height=5,
+                            column_color=blue,
+                            merge_columns=None)
+
+    ##########################################
+    # 6th slide, Auto factor analysis result
     ##########################################
     def importance_analysis_result(self,
                                    test_name:str,
@@ -508,7 +774,7 @@ class MakePPT:
                                         position="center")
 
     ##########################################
-    # 5th slide, Process image
+    # 6th slide, Process image
     ##########################################
     def test_importanct_process(self,
                                 test_name:str,
@@ -543,7 +809,24 @@ class MakePPT:
                                  Inches(6.3)
                                  )
 
+    # First material title
+    def format_title_cover(self, title):
 
+        # title text format
+        title.text_frame.paragraphs[0].font.size = Pt(24) # font size
+        title.text_frame.paragraphs[0].font.name = "Meiryo UI" # font
+        title.text_frame.paragraphs[0].font.bold = True # bold
+        title.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT # position
+
+        # title text position, left -> top -> width -> height
+        title.left = Inches(0.5)
+        title.top = Inches(0.7)
+        title.width = Inches(8)
+        title.height = Inches(0.5)
+
+        return title
+
+    # basic title
     def format_title(self, title):
 
         # title text format
@@ -591,6 +874,8 @@ class MakePPT:
                    column_color:tuple,
                    merge_columns:list=None):
 
+        # reset index
+        df.reset_index(drop=True, inplace=True)
         # add table
         table = slide.shapes.add_table(df.shape[0]+1, # height dicrection shape with column
                                        df.shape[1], # width direction shape
@@ -844,7 +1129,8 @@ if __name__=="__main__":
     mp = MakePPT(savefilename="report.pptx")
 
     # add 1st slide
-    mp.data_summary(dataset_summary=sd.dataset,
+    mp.data_summary(type_name=sd.type_name,
+                    dataset_summary=sd.dataset,
                     ml_learning_dataset_summary=sd.mllearning)
     # add 2nd slide
     mp.yield_diagram(diagram=sd.diagram)
@@ -868,10 +1154,18 @@ if __name__=="__main__":
                                 map_images_df=sd.map_images,
                                 graph_images_df=sd.graph_lot_images)
         # add 4th slide
+        mp.map_analysis(test_name=f"TEST{i}",
+                        condition_analysis=sd.cond,
+                        map_images_df=sd.map_images)
+        # add 5th slide
+        mp.slot_analysis(test_name=f"TEST{i}",
+                        condition_analysis=sd.cond,
+                        slot_analysis_df=sd.slot_df)
+        # add 6th slide
         mp.importance_analysis_result(test_name=f"TEST{i}",
                                         importance_result_df=sd.imp,
                                         importance_graph_images_df=sd.imp_graphs)
-        # add 5th slide
+        # add 7th slide
         mp.test_importanct_process(test_name=f"TEST{i}",
                                     process_image=sd.process_flow)
         # save file
